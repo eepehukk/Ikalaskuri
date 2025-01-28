@@ -19,10 +19,10 @@ Projektin käyttöliittymä on HTML-pohjainen, joten voit avata sen suoraan sela
 Projekti sisältää yksikkötestit, jotka on kirjoitettu Jest -testikirjastolla.
 
   #### Testien suorittaminen
-    ##### 1. Asenna tarvittavat riippuvuudet:
-    - npm install
-    ##### 2. Suorita testit:
-      - npm test
+  ##### 1. Asenna tarvittavat riippuvuudet:
+    npm install
+  ##### 2. Suorita testit:
+    npm test
 
   #### Testit tarkistavat seuraavat toiminnot:
     - Henkilötunnuksen validointi
@@ -30,7 +30,7 @@ Projekti sisältää yksikkötestit, jotka on kirjoitettu Jest -testikirjastolla
     - Iän laskeminen
 
 ### Käytetyt teknologiat
-    - HTML: Käyttöliittymän rakenne, src/index.html.
-    - CSS: Ulkoasun muotoilu, src/styles.css.
-    - JavaScript: Sovelluksen logiikka, src/script.js.
-    - Jest: Yksikkötestaus, src/script.test.js.
+- HTML: Käyttöliittymän rakenne, src/index.html.
+- CSS: Ulkoasun muotoilu, src/styles.css.
+- JavaScript: Sovelluksen logiikka, src/script.js.
+- Jest: Yksikkötestaus, src/script.test.js.
