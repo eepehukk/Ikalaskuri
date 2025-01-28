@@ -1,2 +1,4 @@
 # Estä riippuvuudet (node_modules)
 src/node_modules/
+.DS_Store
+package-lock.json
