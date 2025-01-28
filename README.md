@@ -21,7 +21,8 @@ Projekti sisältää yksikkötestit, jotka on kirjoitettu Jest -testikirjastolla
   #### Testien suorittaminen
   ##### 1. Asenna tarvittavat riippuvuudet:
     npm install
-  ##### 2. Suorita testit:
+  ##### 2. Siirry kansiorakenteessa src.
+  ##### 3. Suorita testit:
     npm test
 
   #### Testit tarkistavat seuraavat toiminnot:
