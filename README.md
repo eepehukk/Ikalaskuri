@@ -9,7 +9,7 @@ Lataa tämä projekti haluamallasi tavalla (esimerkiksi GitHubista).
 
 ### 2. Avaa projekti selaimessa
 Projektin käyttöliittymä on HTML-pohjainen, joten voit avata sen suoraan selaimessa:
-    #### 1. Avaa src/index.html tiedosto selaimessa.
+    #### 1. Avaa src/index.html tiedosto selaimessa esimerkiksi palvelulla "Local host".
     #### 2. Syötä henkilötunnus kenttään (esim. 010187-123K).
     #### 3. Klikkaa "Laske ikä" -painiketta.
     #### 4. Näet syntymäajan ja ikävuodet tuloksena.
@@ -25,9 +25,9 @@ Projekti sisältää yksikkötestit, jotka on kirjoitettu Jest -testikirjastolla
     npm test
 
   #### Testit tarkistavat seuraavat toiminnot:
-    - Henkilötunnuksen validointi
-    - Syntymäajan laskeminen
-    - Iän laskeminen
+  - Henkilötunnuksen validointi
+  - Syntymäajan laskeminen
+  - Iän laskeminen
 
 ### Käytetyt teknologiat
 - HTML: Käyttöliittymän rakenne, src/index.html.
