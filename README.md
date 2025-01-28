@@ -35,3 +35,4 @@ Projekti sisältää yksikkötestit, jotka on kirjoitettu Jest -testikirjastolla
 - CSS: Ulkoasun muotoilu, src/styles.css.
 - JavaScript: Sovelluksen logiikka, src/script.js.
 - Jest: Yksikkötestaus, src/script.test.js.
+- Node.js: testien ajamiseen
