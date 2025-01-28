@@ -5,7 +5,7 @@ Ikälaskuri on selainpohjainen sovellus, joka laskee käyttäjän iän henkilöt
 ## Asennus ja käyttö
 
 ### 1. Lataa tai kloonaa projekti
-Lataa tämä projekti haluamallasi tavalla (esimerkiksi GitHubista).
+Lataa tämä projekti haluamallasi tavalla (JOS TÄMÄ TULEE JULKISEKSI).
 
 ### 2. Avaa projekti selaimessa
 #### Projektin käyttöliittymä on HTML-pohjainen, joten voit avata sen suoraan selaimessa:
