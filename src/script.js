@@ -135,7 +135,10 @@ function laskeIka() {
     }
 }
 
-/* Viedään Henkilotunnus-luokka testien käytettäväksi
-HUOM!!! Tekoäly kehitti ja opasti testien tekemisessä, mutta päävastuun kannoin itse!!!
-*/
+// Näyttää ohjeet alert-ikkunassa
+function naytaOhje() {
+    window.alert("Syötä henkilötunnus muodossa PPKKVV-XYYT ja paina 'Laske ikä'. \n \n Voit myös arpoa satunnaisen henkilötunnuksen KOHTA TULEVALLA-painikkeella. \n \n HUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
+}
+
+// Viedään Henkilotunnus-luokka testien käytettäväksi
 module.exports = Henkilotunnus;

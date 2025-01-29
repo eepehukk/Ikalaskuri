@@ -55,3 +55,26 @@ button:hover {
     color: red;
     margin-top: 10px;
 }
+
+/* Ympyräpainikkeet */
+.circle-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ohjenappi näytön oikeassa yläkulmassa */
+.help-btn {
+    position: absolute;
+    top: 2.5%;
+    right: 2.5%;
+    font-size: 24px;
+}
