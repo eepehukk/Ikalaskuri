@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button class="circle-btn help-btn" onclick="naytaOhje()">?</button> 
+    <button class="help-btn" onclick="naytaOhje()">?</button> 
     <div class="container">
         <h1>Ikälaskuri</h1>
         <input type="text" id="hetu" placeholder="Syötä henkilötunnus (esim. 010187-123K)" />
         <button onclick="laskeIka()">Laske ikä</button>
+        <button onclick="generoiHetu()">Generoi</button>
         <div class="result" id="result"></div>
         <div class="error" id="error"></div>
     </div>

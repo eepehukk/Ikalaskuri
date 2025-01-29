@@ -46,6 +46,13 @@ class Henkilotunnus {
         return tarkistusTaulukko[jakojaannos] === annettuMerkki;
     }
 
+    // Laskee henkilötunnuksen tarkistusmerkin
+    laskeTarkistusmerkki() {
+        const tarkistusmerkit = "0123456789ABCDEFHJKLMNPRSTUVWXY";
+        const luku = parseInt(this.hetu.slice(0, 6) + this.hetu.slice(7, 10), 10);
+        return tarkistusmerkit[luku % 31];
+    }
+
     // Lasketaan henkilön henkilötunnuksesta syntymäaika
     laskeSyntymaAika() {
         // Otetaan talteen henkilötunnuksen ensimmäiset kuusi merkkiä (syntymäpäivä, kuukausi ja vuosi)
@@ -137,7 +144,25 @@ function laskeIka() {
 
 // Näyttää ohjeet alert-ikkunassa
 function naytaOhje() {
-    window.alert("Syötä henkilötunnus muodossa PPKKVV-XYYT ja paina 'Laske ikä'. \n \n Voit myös arpoa satunnaisen henkilötunnuksen KOHTA TULEVALLA-painikkeella. \n \n HUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
+    window.alert("Syötä henkilötunnus muodossa PPKKVV-XYYT ja paina 'Laske ikä'. \n \nVoit myös arpoa satunnaisen henkilötunnuksen 'Generoi'-painikkeella. \n \nHUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
+}
+
+/* Generoi satunnaisen henkilötunnuksen
+Vielä keskeneräinen, koska antaa syntymättömien ihmisten henkilötunnuksia.
+*/
+function generoiHetu() {
+    const paiva = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
+    const kuukausi = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
+    const vuosi = String(Math.floor(Math.random() * 100)).padStart(2, "0");
+
+    const vuosisataMerkit = ["+", "-", "A"];
+    const vuosisataMerkki = vuosisataMerkit[Math.floor(Math.random() * vuosisataMerkit.length)];
+
+    const yksiloNumero = String(Math.floor(Math.random() * 900) + 100);
+    const ilmanTarkistusta = paiva + kuukausi + vuosi + vuosisataMerkki + yksiloNumero;
+    const tarkistusmerkki = new Henkilotunnus(ilmanTarkistusta + "X").laskeTarkistusmerkki();
+
+    document.getElementById("hetu").value = ilmanTarkistusta + tarkistusmerkki;
 }
 
 // Viedään Henkilotunnus-luokka testien käytettäväksi
