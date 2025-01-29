@@ -7,7 +7,7 @@ class Henkilotunnus {
     }
 
     // Tarkistetaan, onko henkilötunnus muodollisesti oikein.
-    validoi() {
+    tarkistaHetu() {
         // Tarkistetaan, että henkilötunnus on oikean pituinen (11 merkkiä)
         if (this.hetu.length !== 11) {
             throw Error("Henkilötunnuksessa pitää olla 11 merkkiä!");
@@ -24,6 +24,26 @@ class Henkilotunnus {
         if (!"+-YWXVUABCDEF".includes(vuosisataMerkki)) { 
             throw Error("Henkilötunnuksen 7. merkki on virheellinen!"); // Sallittujen merkkien lähteenä Wikipedia
         }
+
+        const yksiloNumero = this.hetu.slice(7, 10);
+        if (!/^\d{3}$/.test(yksiloNumero)) {
+            throw Error("Henkilötunnuksen yksilönumero ei ole kolme numeroa!");
+        }
+
+        const tarkistusMerkki = this.hetu[10];
+        if (!this.tarkistusMerkkinTarkistus(syntymaosa, yksiloNumero, tarkistusMerkki)) {
+            throw Error("Henkilötunnuksen tarkistusmerkki (11. merkki) on virheellinen!");
+        }
+    }
+
+    /*
+    tarkistusmerkin menetelmä perustuu https://dvv.fi/henkilotunnus -sivuston ohjeisiin.
+    */
+    tarkistusMerkkinTarkistus(syntymaosa, yksiloNumero, annettuMerkki) {
+        const tarkistusTaulukko = "0123456789ABCDEFHJKLMNPRSTUVWXY";
+        const luku = parseInt(syntymaosa + yksiloNumero, 10);
+        const jakojaannos = luku % 31;
+        return tarkistusTaulukko[jakojaannos] === annettuMerkki;
     }
 
     // Lasketaan henkilön henkilötunnuksesta syntymäaika
@@ -103,12 +123,12 @@ function laskeIka() {
     try {
         // Luodaan uusi Henkilotunnus-olio ja tarkistetaan henkilötunnus
         const hetu = new Henkilotunnus(hetuInput.value);
-        hetu.validoi();
+        hetu.tarkistaHetu();
 
         // Lasketaan ikä ja näytetään tulos
         const ika = hetu.laskeIka();
         result.textContent = `Ikä: ${ika.vuodet} vuotta, ${ika.kuukaudet} kuukautta, ${ika.paivat} päivää.`;
-    // Virheiden käsittely, jos niitä ilmenee validoinnin tai iän laskun (Syntymäajan )aikana.
+    // Virheiden käsittely, jos niitä ilmenee tarkistuksen tai iän laskun (Syntymäajan )aikana.
     } catch (e) {
         // Näytetään mahdollinen virheviesti
         error.textContent = `Virhe: ${e.message}`;
