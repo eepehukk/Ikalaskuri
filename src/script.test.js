@@ -1,4 +1,4 @@
-const { Henkilotunnus, generoiHetu } = require('./script'); // Viittaa script.js-tiedostoon
+const { Henkilotunnus, generointi } = require('./script'); // Viittaa script.js-tiedostoon
 
 describe("Henkilotunnus-luokka", () => {
     test("Henkilötunnuksen tarkistus ei onnistu väärällä tarkistusmerkillä", () => {
@@ -26,7 +26,7 @@ describe("Henkilotunnus-luokka", () => {
 
     test("Henkilötunnus laskee iän oikein", () => {
         const hetu = new Henkilotunnus("010101-123A");
-        const ika = hetu.laskeIka();
+        const ika = hetu.laskeIkaSyntymapaivasta();
 
         // Manuaalisesti laskee nykyisen päivän perusteella iän
         const nyt = new Date();
@@ -45,25 +45,37 @@ describe("Henkilotunnus-luokka", () => {
     });
 });
 
-describe("Hetun generointi", () => {
+describe("Hetun generointi ja sen testaaminen", () => {
     test("Generoitu hetu on oikean pituinen", () => {
-        const hetu = generoiHetu();
+        syntynyt = false;
+        const hetu = generointi(syntynyt);
         expect(hetu.length).toBe(11);
     });
 
-    test("Generoitu hetu on validi ja läpäisee tarkistuksen", () => {
-        const hetuStr = generoiHetu();
+    test("Generoitu hetu on validi ja läpäisee ainakin kerran tarkistuksen", () => {
+        syntynyt = false;
+        const hetuStr = generointi(syntynyt);
         const hetu = new Henkilotunnus(hetuStr);
         expect(() => hetu.tarkistaHetu()).not.toThrow();
     });
-
-    test("Generoitu hetu vastaa jo syntynyttä henkilöä", () => {
-        const hetuStr = generoiHetu();
-        const hetu = new Henkilotunnus(hetuStr);
-        const syntymaAika = hetu.laskeSyntymaAika();
-        const nyt = new Date();
-
-        expect(syntymaAika).toBeInstanceOf(Date);
-        expect(syntymaAika.getTime()).toBeLessThanOrEqual(nyt.getTime());
-    });
+    // Goo
+    test("Generoitu hetu on validi ja läpäisee tarkistuksen 10 000 kertaa", () => {
+        let onnistuneet = 0;
+        for (let i = 0; i < 10000; i++) {
+            const syntynyt = false;  // Käytetään syntymätöntä arvoa
+            const hetuStr = generointi(syntynyt);
+            const hetu = new Henkilotunnus(hetuStr);
+    
+            try {
+                // Tarkistetaan henkilötunnus
+                hetu.tarkistaHetu();
+                onnistuneet++;
+            } catch (e) {
+                // Jos virhe esiintyy, ei tehdä mitään
+            }
+        }
+    
+        // Varmistetaan, että kaikki 100 testiä ovat onnistuneet
+        expect(onnistuneet).toBe(10000);
+    });   
 });

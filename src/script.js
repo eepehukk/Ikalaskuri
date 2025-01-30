@@ -148,7 +148,7 @@ function laskeIka() {
 
 // Näyttää ohjeet alert-ikkunassa
 function naytaOhje() {
-    window.alert("Syötä henkilötunnus muodossa PPKKVV-YYYT ja paina 'Laske ikä'. \n \nVoit myös arpoa satunnaisen henkilötunnuksen 'Generoi'-painikkeella. \n \nHUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
+    window.alert("Syötä henkilötunnus muodossa PPKKVV-YYYT ja paina 'Laske ikä'. \n \nVoit myös arpoa satunnaisen henkilötunnuksen 'Generoi'-painikkeella. \n \nGeneroi hetun ei ole tarkoitus huomioida kaikkia mahdollisia hetuja vaan tarkoitus on tarjota kelvollinen hetu testatakseen ohjelmaa \n \nHUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
 }
 
 /* Generoi satunnaisen henkilötunnuksen
@@ -156,8 +156,13 @@ Vielä keskeneräinen, koska antaa syntymättömien ihmisten henkilötunnuksia.
 */
 function generoiHetu() {
     let syntynyt = false;
-    let hetu = "";
+    // Generointi funktio eriksee, jotta voidaan testata.
+    let hetu = generointi(syntynyt);
+    // Istutetaan generoitu hetu input-kenttään
+    document.getElementById("hetu").value = hetu;
+}
 
+function generointi(syntynyt) {
     while (!syntynyt) {
         const paiva = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
         const kuukausi = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
@@ -186,11 +191,8 @@ function generoiHetu() {
             syntynyt = false;
         }
     }
-
-    document.getElementById("hetu").value = hetu;
+    return hetu;
 }
 
-
-
 // Viedään Henkilotunnus-luokka testien käytettäväksi
-module.exports = { Henkilotunnus, generoiHetu };
+module.exports = { Henkilotunnus, generointi };
