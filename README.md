@@ -36,3 +36,6 @@ Projekti sisältää yksikkötestit, jotka on kirjoitettu Jest -testikirjastolla
 - JavaScript: Sovelluksen logiikka, src/script.js.
 - Jest: Yksikkötestaus, src/script.test.js.
 - Node.js: testien ajamiseen
+
+### Tulevaisuus
+- Tarkoitus oli luoda backend käyttäen rubyä, mutta kaatui siihen, etten ollut tarpeeksi varma latamaan koneelle liikaa tavaraa testatakseni tätä.

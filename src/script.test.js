@@ -1,6 +1,7 @@
 const { Henkilotunnus, generointi } = require('./script'); // Viittaa script.js-tiedostoon
 
 describe("Henkilotunnus-luokka", () => {
+
     test("Henkilötunnuksen tarkistus ei onnistu väärällä tarkistusmerkillä", () => {
         const hetu = new Henkilotunnus("010101-123A");
         expect(() => hetu.tarkistaHetu()).toThrow("Henkilötunnuksen tarkistusmerkki (11. merkki) on virheellinen!");
@@ -46,6 +47,7 @@ describe("Henkilotunnus-luokka", () => {
 });
 
 describe("Hetun generointi ja sen testaaminen", () => {
+    
     test("Generoitu hetu on oikean pituinen", () => {
         syntynyt = false;
         const hetu = generointi(syntynyt);
@@ -58,7 +60,8 @@ describe("Hetun generointi ja sen testaaminen", () => {
         const hetu = new Henkilotunnus(hetuStr);
         expect(() => hetu.tarkistaHetu()).not.toThrow();
     });
-    // Goo
+
+    // Ajattelin 10 000 olevan riittävä määrä testejä. 
     test("Generoitu hetu on validi ja läpäisee tarkistuksen 10 000 kertaa", () => {
         let onnistuneet = 0;
         for (let i = 0; i < 10000; i++) {

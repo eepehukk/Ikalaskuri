@@ -2,6 +2,10 @@
 class Henkilotunnus {
     // Constructor-metodi luokan olion alustamiseen
     constructor(hetu) {
+        // Tarkistetaan, ettei henkilötunnus ole tyhjä
+        if (!hetu) {
+            throw new Error("Henkilötunnus ei voi olla tyhjä");
+        }
         // Tallennetaan henkilötunnus, poistetaan mahdolliset ylimääräiset välilyönnit
         this.hetu = hetu.trim();
     }
@@ -22,15 +26,17 @@ class Henkilotunnus {
         // Tarkistetaan, että henkilötunnuksen 7. merkki (vuosisatamerkki) on sallittu
         const vuosisataMerkki = this.hetu[6];
         if (!"+-YWXVUABCDEF".includes(vuosisataMerkki)) { 
-            throw Error("Henkilötunnuksen 7. merkki on virheellinen!"); // Sallittujen merkkien lähteenä Wikipedia
+            throw Error("Henkilötunnuksen 7. merkki on virheellinen!"); // Sallittujen merkkien lähteenä Wikipedia, mutta pelasin varman päälle laittamalla monia.
         }
 
+        // Tarkistetaan, että henkilötunnuksen "yksilönumerot" ovat numeroita
         const yksiloNumero = this.hetu.slice(7, 10);
         if (!/^\d{3}$/.test(yksiloNumero)) {
             throw Error("Henkilötunnuksen yksilönumero ei ole kolme numeroa!");
         }
 
         const tarkistusMerkki = this.hetu[10];
+        // Tarkistetaan onko tarkistusmerkki paikkaansa pitävä jakojäännöksen mukaan.
         if (!this.tarkistusMerkkinTarkistus(syntymaosa, yksiloNumero, tarkistusMerkki)) {
             throw Error("Henkilötunnuksen tarkistusmerkki (11. merkki) on virheellinen!");
         }
@@ -124,9 +130,9 @@ class Henkilotunnus {
 
 // Käyttöliittymän hallinta
 function laskeIka() {
-    const hetuInput = document.getElementById("hetu"); // Kenttä, johon syötetään henkilötunnus
-    const result = document.getElementById("result"); // Kenttä tuloksen näyttämiseen
-    const error = document.getElementById("error"); // Kenttä virheviestin näyttämiseen
+    const hetuInput = document.getElementById("hetu"); // Haetaan hetu kenttästä, johon syötetään henkilötunnus
+    const result = document.getElementById("result"); // Haetaan kenttä tuloksen näyttämiseen
+    const error = document.getElementById("error"); // Haetaan kenttä virheviestin näyttämiseen
     result.textContent = "";
     error.textContent = "";
 
@@ -164,18 +170,21 @@ function generoiHetu() {
 
 function generointi(syntynyt) {
     while (!syntynyt) {
+        // Arvotaan satunnainen syntymäaika (Ei kata kaikkia mahdollisuuksia, mutta mahdollisimman monia)
         const paiva = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
         const kuukausi = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
         const vuosi = String(Math.floor(Math.random() * 100)).padStart(2, "0");
 
-        const vuosisataMerkit = ["+", "-", "A"];
+        // Generoinnissa en uskaltanut käyttää Wikipedian tarjoamia muita vuosisata merkkejä
+        const vuosisataMerkit = ["A", "-", "+"];
         const vuosisataMerkki = vuosisataMerkit[Math.floor(Math.random() * vuosisataMerkit.length)];
 
         const yksiloNumero = String(Math.floor(Math.random() * 900) + 100);
         const ilmanTarkistusta = paiva + kuukausi + vuosi + vuosisataMerkki + yksiloNumero;
-        const tarkistusmerkki = new Henkilotunnus(ilmanTarkistusta + "X").laskeTarkistusmerkki();
+        const tarkistusmerkki = new Henkilotunnus(ilmanTarkistusta + "X").laskeTarkistusmerkki(); // X on vain testiä varten
         hetu = ilmanTarkistusta + tarkistusmerkki;
 
+        // Isommassa projektissa tulisi keksiä parempi tapa, mutta tässä käytän try-catchia
         try {
             // Luodaan Henkilotunnus-olio
             const henkilotunnus = new Henkilotunnus(hetu);
@@ -194,5 +203,5 @@ function generointi(syntynyt) {
     return hetu;
 }
 
-// Viedään Henkilotunnus-luokka testien käytettäväksi
+// Viedään Henkilotunnus-luokka testien käytettäväksi. Lokaalissa serverin pyörityksessä tarjoaa consoleen erroria, mutta testit toimivat.
 module.exports = { Henkilotunnus, generointi };
