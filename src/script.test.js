@@ -1,4 +1,4 @@
-const Henkilotunnus = require('./script'); // Viittaa script.js-tiedostoon
+const { Henkilotunnus, generoiHetu } = require('./script'); // Viittaa script.js-tiedostoon
 
 describe("Henkilotunnus-luokka", () => {
     test("Henkilötunnuksen tarkistus ei onnistu väärällä tarkistusmerkillä", () => {
@@ -37,5 +37,33 @@ describe("Henkilotunnus-luokka", () => {
     test("Henkilötunnuksen kokeilu oikealla hetulla", () => {
         const hetu = new Henkilotunnus("010107A9596");
         expect(() => hetu.tarkistaHetu()).not.toThrow();
+    });
+
+    test("Henkilötunnuksen kokeilu oikealla hetulla", () => {
+        const hetu = new Henkilotunnus("010107A9596");
+        expect(() => hetu.tarkistaHetu()).not.toThrow();
+    });
+});
+
+describe("Hetun generointi", () => {
+    test("Generoitu hetu on oikean pituinen", () => {
+        const hetu = generoiHetu();
+        expect(hetu.length).toBe(11);
+    });
+
+    test("Generoitu hetu on validi ja läpäisee tarkistuksen", () => {
+        const hetuStr = generoiHetu();
+        const hetu = new Henkilotunnus(hetuStr);
+        expect(() => hetu.tarkistaHetu()).not.toThrow();
+    });
+
+    test("Generoitu hetu vastaa jo syntynyttä henkilöä", () => {
+        const hetuStr = generoiHetu();
+        const hetu = new Henkilotunnus(hetuStr);
+        const syntymaAika = hetu.laskeSyntymaAika();
+        const nyt = new Date();
+
+        expect(syntymaAika).toBeInstanceOf(Date);
+        expect(syntymaAika.getTime()).toBeLessThanOrEqual(nyt.getTime());
     });
 });

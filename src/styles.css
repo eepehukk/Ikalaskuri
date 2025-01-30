@@ -4,7 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 95vh;
 }
 
 .container {
@@ -22,7 +22,7 @@ h1 {
     color: #333;
 }
 
-input[type="text"] {
+input {
     width: 85%;
     padding: 2.5%;
     margin-bottom: 4%;

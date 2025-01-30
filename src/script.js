@@ -38,6 +38,7 @@ class Henkilotunnus {
 
     /*
     tarkistusmerkin menetelmä perustuu https://dvv.fi/henkilotunnus -sivuston ohjeisiin.
+    Tässä tarkistetaan syötteenä annetun tarkistusmerkin paikkaansapitävyys.
     */
     tarkistusMerkkinTarkistus(syntymaosa, yksiloNumero, annettuMerkki) {
         const tarkistusTaulukko = "0123456789ABCDEFHJKLMNPRSTUVWXY";
@@ -46,7 +47,9 @@ class Henkilotunnus {
         return tarkistusTaulukko[jakojaannos] === annettuMerkki;
     }
 
-    // Laskee henkilötunnuksen tarkistusmerkin
+    /* Laskee henkilötunnuksen tarkistusmerkin
+    tarkistusmerkin menetelmä perustuu https://dvv.fi/henkilotunnus -sivuston ohjeisiin.
+    */
     laskeTarkistusmerkki() {
         const tarkistusmerkit = "0123456789ABCDEFHJKLMNPRSTUVWXY";
         const luku = parseInt(this.hetu.slice(0, 6) + this.hetu.slice(7, 10), 10);
@@ -55,7 +58,7 @@ class Henkilotunnus {
 
     // Lasketaan henkilön henkilötunnuksesta syntymäaika
     laskeSyntymaAika() {
-        // Otetaan talteen henkilötunnuksen ensimmäiset kuusi merkkiä (syntymäpäivä, kuukausi ja vuosi)
+        // Otetaan talteen henkilötunnuksen ensimmäiset seitsemän merkkiä (syntymäpäivä, kuukausi ja vuosi) + vuosisatamerkki
         const syntymaosa = this.hetu.slice(0, 6);
         const vuosisataMerkki = this.hetu[6];
 
@@ -92,7 +95,7 @@ class Henkilotunnus {
     }
 
     // Lasketaan henkilön ikä syntymäajan perusteella
-    laskeIka() {
+    laskeIkaSyntymapaivasta() {
         // Haetaan syntymäaika
         const syntymaAika = this.laskeSyntymaAika();
         const nyt = new Date(); // Nykyinen päivämäärä
@@ -133,9 +136,10 @@ function laskeIka() {
         hetu.tarkistaHetu();
 
         // Lasketaan ikä ja näytetään tulos
-        const ika = hetu.laskeIka();
+        const ika = hetu.laskeIkaSyntymapaivasta();
         result.textContent = `Ikä: ${ika.vuodet} vuotta, ${ika.kuukaudet} kuukautta, ${ika.paivat} päivää.`;
-    // Virheiden käsittely, jos niitä ilmenee tarkistuksen tai iän laskun (Syntymäajan )aikana.
+
+    // Virheiden käsittely, jos niitä ilmenee tarkistuksen tai iän laskun (Syntymäajan) aikana.
     } catch (e) {
         // Näytetään mahdollinen virheviesti
         error.textContent = `Virhe: ${e.message}`;
@@ -144,26 +148,49 @@ function laskeIka() {
 
 // Näyttää ohjeet alert-ikkunassa
 function naytaOhje() {
-    window.alert("Syötä henkilötunnus muodossa PPKKVV-XYYT ja paina 'Laske ikä'. \n \nVoit myös arpoa satunnaisen henkilötunnuksen 'Generoi'-painikkeella. \n \nHUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
+    window.alert("Syötä henkilötunnus muodossa PPKKVV-YYYT ja paina 'Laske ikä'. \n \nVoit myös arpoa satunnaisen henkilötunnuksen 'Generoi'-painikkeella. \n \nHUOM!!! ÄLÄ KÄYTÄ OMAA HETUA VAA GENEROI TOIMIVA HETU https://www.lintukoto.net/muut/henkilotunnus/ ");
 }
 
 /* Generoi satunnaisen henkilötunnuksen
 Vielä keskeneräinen, koska antaa syntymättömien ihmisten henkilötunnuksia.
 */
 function generoiHetu() {
-    const paiva = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
-    const kuukausi = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
-    const vuosi = String(Math.floor(Math.random() * 100)).padStart(2, "0");
+    let syntynyt = false;
+    let hetu = "";
 
-    const vuosisataMerkit = ["+", "-", "A"];
-    const vuosisataMerkki = vuosisataMerkit[Math.floor(Math.random() * vuosisataMerkit.length)];
+    while (!syntynyt) {
+        const paiva = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
+        const kuukausi = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
+        const vuosi = String(Math.floor(Math.random() * 100)).padStart(2, "0");
 
-    const yksiloNumero = String(Math.floor(Math.random() * 900) + 100);
-    const ilmanTarkistusta = paiva + kuukausi + vuosi + vuosisataMerkki + yksiloNumero;
-    const tarkistusmerkki = new Henkilotunnus(ilmanTarkistusta + "X").laskeTarkistusmerkki();
+        const vuosisataMerkit = ["+", "-", "A"];
+        const vuosisataMerkki = vuosisataMerkit[Math.floor(Math.random() * vuosisataMerkit.length)];
 
-    document.getElementById("hetu").value = ilmanTarkistusta + tarkistusmerkki;
+        const yksiloNumero = String(Math.floor(Math.random() * 900) + 100);
+        const ilmanTarkistusta = paiva + kuukausi + vuosi + vuosisataMerkki + yksiloNumero;
+        const tarkistusmerkki = new Henkilotunnus(ilmanTarkistusta + "X").laskeTarkistusmerkki();
+        hetu = ilmanTarkistusta + tarkistusmerkki;
+
+        try {
+            // Luodaan Henkilotunnus-olio
+            const henkilotunnus = new Henkilotunnus(hetu);
+            const syntymaAika = henkilotunnus.laskeSyntymaAika();
+            const nyt = new Date();
+
+            // Varmistetaan, että syntymäpäivä ei ole tulevaisuudessa
+            if (syntymaAika <= nyt) {
+                syntynyt = true; // Hyväksytään vain menneisyydessä syntyneet
+            }
+        } catch (e) {
+            // Jos syntymäaika ei ole kelvollinen, jatketaan silmukkaa
+            syntynyt = false;
+        }
+    }
+
+    document.getElementById("hetu").value = hetu;
 }
 
+
+
 // Viedään Henkilotunnus-luokka testien käytettäväksi
-module.exports = Henkilotunnus;
+module.exports = { Henkilotunnus, generoiHetu };

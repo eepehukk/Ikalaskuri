@@ -11,5 +11,11 @@
   "description": "",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "brew": "^0.0.8",
+    "fileutils": "^1.0.2",
+    "json": "^11.0.0",
+    "sinatra": "^0.0.5"
   }
 }
