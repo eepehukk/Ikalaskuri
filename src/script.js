@@ -203,5 +203,24 @@ function generointi(syntynyt) {
     return hetu;
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("http://localhost:4567/server-number")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("server-number").textContent = "Server Number: " + data.number;
+        })
+        .catch(error => {
+            console.error("Error fetching server number:", error);
+            document.getElementById("server-number").textContent = "Virhe ladattaessa numeroa";
+        });
+});
+
+
+
 // Viedään Henkilotunnus-luokka testien käytettäväksi. Lokaalissa serverin pyörityksessä tarjoaa consoleen erroria, mutta testit toimivat.
 module.exports = { Henkilotunnus, generointi };
